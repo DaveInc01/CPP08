@@ -5,14 +5,25 @@ Span::Span(unsigned int N)
     vect.reserve(N);
 }
 
+Span::Span( const Span &copy )
+{
+    vect.assign(copy.vect.begin(), copy.vect.end());
+}
+
+Span& Span::operator=( const Span &other )
+{
+    vect.assign(other.vect.begin(), other.vect.end());
+    return *this;
+}
+
 const char* Span::myException::what() const throw(){
-    return ("invalid vector exception\n");
+    return (text);
 }
 
 void Span::addNumber(int num)
 {
     if (vect.size() >= vect.capacity()){
-        throw(Span::myException());
+        throw(Span::myException("No more space in the vector : exception"));
     }
     else{
         vect.push_back(num);
@@ -33,7 +44,7 @@ int get_min_span(std::vector<int> v_sorted){
 int Span::shortestSpan()
 {
     if (vect.size() < 2)
-        throw(Span::myException());
+        throw(Span::myException("Vector should had at least 2 element : exception"));
     std::vector<int> v_sorted(vect.size());
     partial_sort_copy(vect.begin(),vect.end(), v_sorted.begin(), v_sorted.end());
     return (get_min_span(v_sorted));
@@ -42,7 +53,7 @@ int Span::shortestSpan()
 int Span::longestSpan()
 {
     if (vect.size() < 2)
-        throw(Span::myException());
+        throw(Span::myException("Vector should had at least 2 element: : exception"));
     std::vector<int> v_sorted(vect.size());
     partial_sort_copy(vect.begin(),vect.end(), v_sorted.begin(), v_sorted.end());
     return (*(v_sorted.end() - 1) - *(v_sorted.begin()));
