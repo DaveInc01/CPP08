@@ -5,7 +5,9 @@ int main (){
     srand (time(NULL));
 
     std::vector<int> arr(9999);
-    std::generate(arr.begin(),arr.end(), rand);
+    for (unsigned int i = 0; i < arr.size(); i++)
+        arr[i] = rand();
+    // std::generate(arr.begin(),arr.end(), rand);
     try {
         fillVect(arr.begin(), arr.end(), *s1);
         s1->addNumber(23);

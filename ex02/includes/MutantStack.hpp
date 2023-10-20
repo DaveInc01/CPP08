@@ -4,20 +4,43 @@
 #include <iostream>
 #include <stack>
 #include <vector>
+#include <deque>
+#include <list>
 
-template <typename T>
-class MutantStack :public std::stack<T>{
-public:
-    MutantStack (){};
-    // MutantStack (MutantStack &copy);
-    // MutantStack& operator=(MutantStack &other);
-    ~MutantStack(){};
-public:
-    void push(T);
-    void pop();
-    std::vector<T>::iterator top() const;
-    std::vector<T>   s;
-    unsigned int stack_size;
+template <class T , class Container = std::deque<T> >
+class MutantStack :  public std::stack<T>
+{
+	public:
+
+	typedef typename Container::iterator iterator;
+
+
+	MutantStack() : MutantStack<T, Container>::stack(){};
+	MutantStack(std::stack<T> &obj)
+	{
+		this->c = obj.getC();
+	};
+	MutantStack(std::list<T> &obj) : std::stack<T, Container>( obj )
+	{
+		this->c = obj.getC();
+	};
+	MutantStack<T, Container> & operator=(const MutantStack<T, Container> &obj)
+    {
+		if (this != &obj)
+			std::stack<T>::operator=(obj);
+
+		return *this;
+	};
+	Container getC(){
+        return (this->c);
+    };
+	iterator begin(){
+        return this->c.begin();
+    };
+	iterator end(){
+        return this->c.end();
+    };
+	~MutantStack(){};
 };
 
 #endif
